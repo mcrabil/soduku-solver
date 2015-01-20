@@ -227,12 +227,41 @@ public class Main {
 		}
 	}
 
+	public static void solveSingleCandidate() {
+		for (int x = 0; x < 9; x++) {
+			for (int y = 0; y < 9; y++) {
+				if(puzzle[x][y] > 0){
+					continue;
+				}
+				int res = -1;
+				for (int val = 1; val < 10; val++) {
+					if (boxContainsValue(x / BOXSIZE, y / BOXSIZE, val)
+							|| colContainsValue(y, val)
+							|| rowContainsValue(x, val)) {
+						continue;
+					}else{
+						if(res > 0){
+							res = -1;
+							break;
+						}else{
+							res = val;
+						}
+					}
+				}
+				if(res > 0){
+					puzzle[x][y] = res;
+				}
+			}
+		}
+	}
+
 	public static void solvePuzzle() {
 		while (true) {
 			changed = false;
 			solveBoxes();
 			solveRows();
 			solveCols();
+			solveSingleCandidate();
 			if (!changed) {
 				break;
 			}
